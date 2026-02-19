@@ -1,0 +1,24 @@
+module ZGlassCutter
+{
+    craftRecipe MakeGlassCutter
+    {
+        time = 100,
+        NeedToBeLearn = true,
+        category = Assembly,
+        Tags = AnySurfaceCraft;Engineer,
+        SkillRequired = Maintenance:1,
+        timedAction = MakingHammer_Surface,
+        xpAward = Maintenance:20;Glassmaking:10,
+        inputs
+        {
+            item 1 tags[base:hammer] mode:keep flags[Prop1;MayDegradeVeryLight],
+            item 1 [Base.CompassGeometry;Base.LetterOpener;Base.PenFancy;Base.TinOpener_Old] mode:destroy,
+            item 1 [Base.Diamond] mode:destroy,
+            item 1 tags[base:epoxy],
+        }
+        outputs
+        {
+            item 1 ZGlassCutter.GlassCutter,
+        }
+    }
+}

@@ -1,0 +1,3 @@
+Tooltip_EN = {
+    Tooltip_GlassCutter = "A small, sharp tool used for cutting glass. <br>Use to remove glass panes from windows.",
+}

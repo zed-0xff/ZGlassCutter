@@ -1,0 +1,4 @@
+ItemName_EN = {
+    ItemName_ZGlassCutter.GlassCutter = "Glass Cutter",
+    ItemName_ZGlassCutter.GlassCuttingMag = "Magazine: Cutting Glass for Fun and Profit",
+}

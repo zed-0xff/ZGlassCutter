@@ -1,0 +1,9 @@
+[h1]Glass Cutter[/h1]
+
+
+[b]Links:[/b]
+[url=https://github.com/zed-0xff/ZGlassCutter]GitHub Repository[/url]
+
+[b]☕ Support the Developer:[/b]
+[url=https://ko-fi.com/zed_0xff][img]https://i.imgur.com/Utx6OIH.png[/img][/url]
+

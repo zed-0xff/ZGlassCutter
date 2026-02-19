@@ -1,0 +1,3 @@
+Recipes_EN = {
+    MakeGlassCutter = "Make Glass Cutter",
+}

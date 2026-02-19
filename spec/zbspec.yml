@@ -1,0 +1,11 @@
+# ZBSpec configuration (created by zbspec --init)
+
+unpause: false
+auto_shutdown: false
+debug: true
+
+mods:
+  - { id: "your-mod-id", path: "." }
+
+game_versions:
+  - default
