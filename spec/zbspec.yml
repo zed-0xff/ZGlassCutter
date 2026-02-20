@@ -1,11 +1,9 @@
 # ZBSpec configuration (created by zbspec --init)
 
-unpause: false
-auto_shutdown: false
-debug: true
+unpause: true
 
 mods:
-  - { id: "your-mod-id", path: "." }
+  - { id: "ZGlassCutter", path: "." }
 
 game_versions:
-  - default
+  - 42.13.2
