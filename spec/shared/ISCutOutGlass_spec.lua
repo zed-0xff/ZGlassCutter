@@ -1,0 +1,48 @@
+describe(ISCutOutGlass, function()
+    it("exists", function()
+        assert(described_class)
+    end)
+
+    it("has RequiredPerk = Maintenance", function()
+        assert.eq(Perks.Maintenance, described_class.RequiredPerk)
+    end)
+
+    it("has RequiredPerkLevel = 1", function()
+        assert.eq(1, described_class.RequiredPerkLevel)
+    end)
+
+    it("has RequiredItemTag matching Tags.GlassCutter", function()
+        assert.eq(ZGlassCutter.Tags.GlassCutter, described_class.RequiredItemTag)
+    end)
+
+    it("has MinDuration and MaxDuration in range", function()
+        assert(described_class.MinDuration >= 1)
+        assert(described_class.MaxDuration >= described_class.MinDuration)
+    end)
+
+    it("predicateNotBroken returns true for unbroken item", function()
+        local item = create_item("ZGlassCutter.GlassCutter")
+        assert.is_true(described_class.predicateNotBroken(item))
+    end)
+
+    it("predicateNotBroken returns false for broken item", function()
+        local item = create_item("ZGlassCutter.GlassCutter")
+        item:setCondition(0)
+        assert.is_true(item:isBroken())
+        assert.is_false(described_class.predicateNotBroken(item))
+    end)
+
+    describe("getWindowBreakChance()", function()
+        it("returns a number between 1 and 99", function()
+            local player = get_player()
+            assert(player)
+            local cutter = create_item("ZGlassCutter.GlassCutter")
+            local chance = described_class.getWindowBreakChance(player, cutter)
+            assert.is_number(chance)
+            assert.gt(chance, 0)
+            assert.lt(chance, 100)
+        end)
+    end)
+end)
+
+return ZBSpec.run()

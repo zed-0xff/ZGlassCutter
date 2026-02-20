@@ -1,6 +1,11 @@
-describe("example", function()
-    it("passes", function()
-        assert.eq(4, 2 + 2)
+describe("ZGlassCutter module", function()
+    it("exists", function()
+        assert(ZGlassCutter)
+    end)
+
+    it("has Tags.GlassCutter", function()
+        assert(ZGlassCutter.Tags)
+        assert(ZGlassCutter.Tags.GlassCutter)
     end)
 end)
 

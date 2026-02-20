@@ -1,1 +1,1 @@
-it should decrease gloves condition on fail
+-- TODO: take damage / protect hands
