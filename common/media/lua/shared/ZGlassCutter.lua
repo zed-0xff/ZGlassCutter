@@ -1,0 +1,1 @@
+ZGlassCutter = ZGlassCutter or {}

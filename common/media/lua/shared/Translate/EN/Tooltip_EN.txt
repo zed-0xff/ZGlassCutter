@@ -1,3 +1,4 @@
 Tooltip_EN = {
-    Tooltip_GlassCutter = "A small, sharp tool used for cutting glass. <br>Use to remove glass panes from windows.",
+    Tooltip_GlassCutter   = "A small, sharp tool used for cutting glass. <br>Use to remove glass panes from windows.",
+    Tooltip_Skill_Too_Low = "<BHC> %1 skill level is too low",
 }

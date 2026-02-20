@@ -39,7 +39,7 @@ module ZGlassCutter
         SwingAnim = Stab,
         SwingSound = IcePickSwing,
         Swingtime = 2.0,
-        Tags = base:hasmetal;base:smeltableironsmall,
+        Tags = ZGlassCutter:GlassCutterTag,
         Tooltip = Tooltip_GlassCutter,
         TreeDamage = 0,
         WeaponLength = 0.15,
