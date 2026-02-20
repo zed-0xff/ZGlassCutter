@@ -71,9 +71,8 @@ end
 
 --- instance methods
 
-function ISCutOutGlass:new(character, window, cutter)
+function ISCutOutGlass:new(character, window)
 	local o = ISBaseTimedAction.new(self, character);
-    o.cutter = cutter
 	o.window = window
 	o.maxTime = o:getDuration()
     o.useProgressBar = true
@@ -130,19 +129,21 @@ function ISCutOutGlass:perform()
 end
 
 function ISCutOutGlass:complete()
+    local cutter = self.character:getPrimaryHandItem()
+    local condLowerChance = cutter:getConditionLowerChance() + self.character:getMaintenanceMod()
+
     -- ZombRand(100) returns 0-99 so if break chance is 99% then value of 99 should not break it
-    if ZombRand(100) < ISCutOutGlass.getWindowBreakChance(self.character, self.cutter) then
+    if ZombRand(100) < ISCutOutGlass.getWindowBreakChance(self.character, cutter) then
+        condLowerChance = condLowerChance / 2 -- more likely to lower condition if window breaks
         self.window:smashWindow()
 
-        -- TODO: damage instrument
-        -- TODO: check wearing gloves
+        cutter:setCondition(cutter:getCondition() - 1)
         local gloves = self.character:getWornItem(ItemBodyLocation.HANDS)
         if gloves and not gloves:isBroken() and gloves:getScratchDefense() > 0 then
-            gloves:setCondition(gloves:getCondition() - 1);
-            sendItemCondition(self.character, gloves)
+            gloves:setCondition(gloves:getCondition() - 1)
         else
-            self.character:getBodyDamage():setScratchedWindow();
-            sendDamage(self.character);
+            self.character:getBodyDamage():setScratchedWindow()
+            sendDamage(self.character)
         end
     else
         self.window:setSmashed(true);
@@ -151,6 +152,10 @@ function ISCutOutGlass:complete()
         local inventory = self.character:getInventory()
         local item = inventory:AddItem("Base.GlassPanel")
         sendAddItemToContainer(inventory, item)
+    end
+
+    if ZombRand(condLowerChance) == 0 then
+        cutter:setCondition(cutter:getCondition() - 1)
     end
 
 	if isServer() then
