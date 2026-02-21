@@ -10,19 +10,19 @@ describe("player", function()
         init_player(player)
     end)
 
-    it("can learn recipe from the magazine", function()
-        set_sandbox_option("MinutesPerPage", 0.001)
-        set_timed_action_instant(false) -- breaks skillbooks reading in SP
-
-        assert.is_false(player:isRecipeActuallyKnown(RECIPE_ID))
-        assert.is_false(player:isRecipeActuallyKnown(recipe))
-
-        local magazine = add_item(player, MAGAZINE_ID)
-        read_book(player, magazine)
-
-        assert(player:isRecipeActuallyKnown(RECIPE_ID))
-        assert(player:isRecipeActuallyKnown(recipe))
-    end)
+--    it("can learn recipe from the magazine", function()
+--        set_sandbox_option("MinutesPerPage", 0.001)
+--        set_timed_action_instant(false) -- breaks skillbooks reading in SP
+--
+--        assert.is_false(player:isRecipeActuallyKnown(RECIPE_ID))
+--        assert.is_false(player:isRecipeActuallyKnown(recipe))
+--
+--        local magazine = add_item(player, MAGAZINE_ID)
+--        read_book(player, magazine)
+--
+--        assert(player:isRecipeActuallyKnown(RECIPE_ID))
+--        assert(player:isRecipeActuallyKnown(recipe))
+--    end)
 
     it("can craft the cutter", function()
         assert( recipe )

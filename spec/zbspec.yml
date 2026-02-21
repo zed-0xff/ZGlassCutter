@@ -1,10 +1,13 @@
-# ZBSpec configuration (created by zbspec --init)
+# see https://github.com/zed-0xff/zbspec
 
 unpause: true
 sandbox: false
 
+log_packets: false
+
 mods:
   - { id: "ZGlassCutter", path: "." }
+  - ZBBetterFPS
 
 # TODO: implement
 # SandboxVars:

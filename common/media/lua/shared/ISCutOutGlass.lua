@@ -147,7 +147,7 @@ function ISCutOutGlass:complete()
         if ZombRand(2) == 0 then
             local gloves = self.character:getWornItem(ItemBodyLocation.HANDS)
             if gloves and not gloves:isBroken() and gloves:getScratchDefense() > 0 then
-                gloves:setCondition(gloves:getCondition() - 1)
+                gloves:reduceCondition()
             else
                 self.character:getBodyDamage():setScratchedWindow()
                 sendDamage(self.character)
@@ -163,7 +163,7 @@ function ISCutOutGlass:complete()
     end
 
     if ZombRand(condLowerChance) == 0 then
-        cutter:setCondition(cutter:getCondition() - 1)
+        cutter:reduceCondition()
     end
 
 	if isServer() then

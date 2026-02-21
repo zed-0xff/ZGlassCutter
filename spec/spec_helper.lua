@@ -33,18 +33,22 @@ function init_player(player)
     if ISTimedActionQueue and ISTimedActionQueue.clear then
         ISTimedActionQueue.clear(get_player())
     end
-    if isClient() then
-        -- Use server_eval (not server_exec) to wait for server to complete clearing
-        -- before test continues. Otherwise race condition: add_item might run before
-        -- server processes the clear, causing items to disappear after being added.
-        server_eval("getOnlinePlayers():get(0):getInventory():removeAllItems()")
-        server_eval("getOnlinePlayers():get(0):getReadLiterature():clear()")
-        server_eval("getOnlinePlayers():get(0):forgetRecipes()")
+
+    if isMultiplayer() then
+        if isClient() then
+            local inv = player:getInventory()
+            local items = inv:getItems()
+            local types = {}
+            for i=0, items:size()-1 do
+                types[items:get(i):getFullType()] = true
+            end
+            for itemType, _ in pairs(types) do
+                SendCommandToServer("/removeitem " .. itemType .. " 0")
+            end
+        end
     end
-    -- both for SP and MP client
     player:getInventory():removeAllItems()
-    player:getReadLiterature():clear()
-    player:forgetRecipes()
+
 
     ZBSpec.all_exec([[
       local player = (getPlayer() or getOnlinePlayers():get(0))
@@ -53,6 +57,14 @@ function init_player(player)
       player:setGodMod(true)
       player:setInvincible(true)
       player:getBodyDamage():RestoreToFullHealth()
+
+      -- clear inventory
+      player:setPrimaryHandItem(nil)
+      player:setSecondaryHandItem(nil)
+
+      -- reset known recipes
+      player:getReadLiterature():clear()
+      player:forgetRecipes()
 
       -- reset profession
       player:getDescriptor():setCharacterProfession(CharacterProfession.UNEMPLOYED)
@@ -100,7 +112,7 @@ function add_item(player, itemFullType)
         -- MP
         SendCommandToServer("/additem \"" .. player:getDisplayName() .. "\" \"" .. itemFullType .. "\"")
         local inv = player:getInventory()
-        wait_for(inv.contains, inv, itemFullType)
+        ZBSpec.wait_for(inv.contains, inv, itemFullType)
         item = inv:getItemFromType(itemFullType, false, false)
     else
         -- SP
@@ -118,7 +130,7 @@ function remove_all_non_floor(square)
         table.insert(toRemove, obj)
     end
     for _, obj in ipairs(toRemove) do
-        obj:removeFromSquare()
+        square:transmitRemoveItemFromSquare(obj)
     end
 
     local toRemove = {}
@@ -130,7 +142,7 @@ function remove_all_non_floor(square)
     end
 
     for _, obj in ipairs(toRemove) do
-        square:DeleteTileObject(obj) -- or RemoveTileObject ?
+        square:transmitRemoveItemFromSquare(obj)
     end
 end
 
@@ -143,7 +155,16 @@ function place_tile(square, name)
         end
     end
     remove_all_non_floor(square)
-    return square:addTileObject(name)
+
+    local obj = square:addTileObject(name)
+    if isClient() then
+        obj:transmitCompleteItemToServer()
+    end
+    if isServer() then
+        obj:transmitCompleteItemToClients()
+    end
+
+    return obj
 end
 
 function place_window(square, name)
@@ -151,6 +172,12 @@ function place_window(square, name)
 
     local window = IsoWindow.new(getCell(), square, getSprite(name), true)
     square:AddSpecialObject(window)
+    if isClient() then
+        window:transmitCompleteItemToServer()
+    end
+    if isServer() then
+        window:transmitCompleteItemToClients()
+    end
     return square:getObjectWithSprite(name)
 end
 
