@@ -1,14 +1,7 @@
--- local x = getCore():getScreenWidth() / 2
--- local y = getCore():getScreenHeight() / 2
--- local obj=getPlayer():getSquare():getObjects():get(0)
--- triggerEvent("OnObjectRightMouseButtonDown", obj, x, y)
--- triggerEvent("OnObjectRightMouseButtonUp", obj, x, y)
-
 describe("player", function()
     -- XXX as of 42.13.2 recipe has to be in 'Base' module :( -- https://pzwiki.net/wiki/CraftRecipe
     local RECIPE_ID   = "MakeGlassCutter"
     local MAGAZINE_ID = "ZGlassCutter.GlassCuttingMag"
-    local CUTTER_ID   = "ZGlassCutter.GlassCutter"
 
     local player = get_player()
     local recipe = getScriptManager():getCraftRecipe(RECIPE_ID)

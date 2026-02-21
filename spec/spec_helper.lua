@@ -1,3 +1,5 @@
+CUTTER_ID = "ZGlassCutter.GlassCutter"
+
 function set_sandbox_option(option, value)
     ZBSpec.all_exec("getSandboxOptions():getOptionByName(\"" .. option .. "\"):setValue(" .. tostring(value) .. ")")
 end
@@ -66,15 +68,37 @@ function add_item(player, itemFullType)
     return item
 end
 
-function place_tile(square, name)
+function remove_all_non_floor(square)
+    local toRemove = {}
     for i = 0, square:getObjects():size() - 1 do
         local obj = square:getObjects():get(i)
+        if not obj:isFloor() then
+            table.insert(toRemove, obj)
+        end
+    end
+
+    for _, obj in ipairs(toRemove) do
+        square:DeleteTileObject(obj) -- or RemoveTileObject ?
+    end
+end
+
+function place_tile(square, name)
+    local objects = square:getObjects()
+    for i = 0, objects:size() - 1 do
+        local obj = objects:get(i)
         if obj:getSprite():getName() == name then
             return obj
         end
     end
-
+    remove_all_non_floor(square)
     return square:addTileObject(name)
+end
+
+function place_window(square, name)
+    remove_all_non_floor(square)
+    local window = IsoWindow.new(getCell(), square, getSprite(name), true)
+    square:AddSpecialObject(window)
+    return square:getObjectWithSprite(name)
 end
 
 function place_table(square)
