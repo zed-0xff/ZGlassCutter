@@ -1,9 +1,18 @@
 # ZBSpec configuration (created by zbspec --init)
 
 unpause: true
+sandbox: false
 
 mods:
   - { id: "ZGlassCutter", path: "." }
+
+# TODO: implement
+# SandboxVars:
+#   MinutesPerPage: 0.001
+
+ready_condition: |
+  local player = getPlayer() or getOnlinePlayers():get(0)
+  return player and not player:tooDarkToRead()
 
 game_versions:
   - 42.13.2
