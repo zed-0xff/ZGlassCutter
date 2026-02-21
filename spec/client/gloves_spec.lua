@@ -1,1 +1,0 @@
--- TODO: take damage / protect hands

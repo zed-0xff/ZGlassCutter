@@ -140,14 +140,18 @@ function ISCutOutGlass:complete()
     --  if break chance is  1% then random value of  0 should break ia
     if ZombRand(100) < ISCutOutGlass.getWindowBreakChance(self.character, cutter) then
         condLowerChance = condLowerChance / 2 -- more likely to lower condition if window breaks
-        self.window:smashWindow()
 
-        local gloves = self.character:getWornItem(ItemBodyLocation.HANDS)
-        if gloves and not gloves:isBroken() and gloves:getScratchDefense() > 0 then
-            gloves:setCondition(gloves:getCondition() - 1)
-        else
-            self.character:getBodyDamage():setScratchedWindow()
-            sendDamage(self.character)
+        -- as in ISSmashWindow
+        self.window:WeaponHit(self.character, nil);
+
+        if ZombRand(2) == 0 then
+            local gloves = self.character:getWornItem(ItemBodyLocation.HANDS)
+            if gloves and not gloves:isBroken() and gloves:getScratchDefense() > 0 then
+                gloves:setCondition(gloves:getCondition() - 1)
+            else
+                self.character:getBodyDamage():setScratchedWindow()
+                sendDamage(self.character)
+            end
         end
     else
         self.window:setSmashed(true);

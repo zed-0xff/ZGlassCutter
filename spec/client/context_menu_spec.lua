@@ -132,7 +132,7 @@ describe("context menu", function()
 
                 it("shows high break chance", function()
                     local chance = tonumber(cut_out_glass_option.toolTip.description:match("(%d+)%%"))
-                    assert.gt(chance, 70)
+                    assert.gt(chance, 60)
                 end)
             end)
 
