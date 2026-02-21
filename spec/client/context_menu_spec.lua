@@ -125,8 +125,14 @@ describe("context menu", function()
         end)
 
         context("when player has a cutter", function()
+            local descr = nil
+
             before_all(function()
                 add_item(player, CUTTER_ID)
+            end)
+
+            before_each(function()
+                descr = cut_out_glass_option.toolTip.description
             end)
 
             it("shows the 'Cut out glass' option", function()
@@ -137,6 +143,51 @@ describe("context menu", function()
                 it("has texture of the cutter item", function()
                     assert(cut_out_glass_option.iconTexture)
                     assert.eq(cut_out_glass_option.iconTexture, create_item(CUTTER_ID):getTexture())
+                end)
+            end)
+
+            context("but no skill", function()
+                before_all(function()
+                    set_perk_level(player, Perks.Maintenance, 0)
+                end)
+
+                it("is disabled", function()
+                    assert(cut_out_glass_option.notAvailable)
+                end)
+
+                it("has the 'low skill' tooltip", function()
+                    assert.eq(getText("Tooltip_Skill_Too_Low", ISCutOutGlass.RequiredPerk:getName()), descr)
+                    assert.is_false(descr:contains("Tooltip_Skill_Too_Low"), "Tooltip should not contain the raw translation key")
+                end)
+            end)
+
+            context("and low skill", function()
+                before_all(function()
+                    set_perk_level(player, Perks.Maintenance, 1)
+                end)
+
+                it("is enabled", function()
+                    assert(not cut_out_glass_option.notAvailable)
+                end)
+
+                it("shows high break chance", function()
+                    local chance = tonumber(cut_out_glass_option.toolTip.description:match("(%d+)%%"))
+                    assert.gt(chance, 70)
+                end)
+            end)
+
+            context("and high skill", function()
+                before_all(function()
+                    set_perk_level(player, Perks.Maintenance, 8)
+                end)
+
+                it("is enabled", function()
+                    assert(not cut_out_glass_option.notAvailable)
+                end)
+
+                it("shows low break chance", function()
+                    local chance = tonumber(cut_out_glass_option.toolTip.description:match("(%d+)%%"))
+                    assert.lt(chance, 50)
                 end)
             end)
         end)

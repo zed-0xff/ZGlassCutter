@@ -21,7 +21,7 @@ end
 
 function ISCutOutGlass.getWindowBreakChance(character, cutter) -- returns 0-100
     local chance = (
-        70
+        80
         - character:getPerkLevel(Perks.Maintenance) * 5
         - character:getPerkLevel(Perks.Glassmaking) * 5
         - character:getPerkLevel(Perks.Science)     * 5
