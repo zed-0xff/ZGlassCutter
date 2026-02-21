@@ -49,6 +49,11 @@ function init_player(player)
     ZBSpec.all_exec([[
       local player = (getPlayer() or getOnlinePlayers():get(0))
 
+      -- TODO: check on MP
+      player:setGodMod(true)
+      player:setInvincible(true)
+      player:getBodyDamage():RestoreToFullHealth()
+
       -- reset profession
       player:getDescriptor():setCharacterProfession(CharacterProfession.UNEMPLOYED)
 
@@ -73,9 +78,14 @@ function init_player(player)
     ]])
 end
 
-function read_book(player, book)
-    ISTimedActionQueue.add(ISReadABook:new(player, book, 1))
+function run_action(actionClass, player, ...)
+    local action = actionClass:new(player, ...)
+    ISTimedActionQueue.add(action)
     ZBSpec.wait_for_not(ISTimedActionQueue.isPlayerDoingAction, player)
+end
+
+function read_book(player, book)
+    run_action(ISReadABook, player, book, 1)
 end
 
 function create_item(itemFullType)
@@ -103,6 +113,15 @@ end
 
 function remove_all_non_floor(square)
     local toRemove = {}
+    for i = 0, square:getSpecialObjects():size() - 1 do
+        local obj = square:getSpecialObjects():get(i)
+        table.insert(toRemove, obj)
+    end
+    for _, obj in ipairs(toRemove) do
+        obj:removeFromSquare()
+    end
+
+    local toRemove = {}
     for i = 0, square:getObjects():size() - 1 do
         local obj = square:getObjects():get(i)
         if not obj:isFloor() then
@@ -129,6 +148,7 @@ end
 
 function place_window(square, name)
     remove_all_non_floor(square)
+
     local window = IsoWindow.new(getCell(), square, getSprite(name), true)
     square:AddSpecialObject(window)
     return square:getObjectWithSprite(name)

@@ -5,7 +5,7 @@ module ZGlassCutter
         AimingMod = 0.8,
         BreakSound = IcePickBreak,
         Categories = base:improvised,
-        ConditionLowerChanceOneIn = 10,
+        ConditionLowerChanceOneIn = 4,
         ConditionMax = 10,
         CritDmgMultiplier = 5.0,
         CriticalChance = 20.0,

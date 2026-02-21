@@ -21,7 +21,7 @@ end
 
 function ISCutOutGlass.getWindowBreakChance(character, cutter) -- returns 0-100
     local chance = (
-        80
+        75
         - character:getPerkLevel(Perks.Maintenance) * 5
         - character:getPerkLevel(Perks.Glassmaking) * 5
         - character:getPerkLevel(Perks.Science)     * 5 -- will return 0 if perk is not defined
@@ -81,6 +81,9 @@ function ISCutOutGlass:new(character, window)
 end
 
 function ISCutOutGlass:isValid()
+    if not self.character:hasEquippedTag(ISCutOutGlass.RequiredItemTag) then
+        return false
+    end
     return ISCutOutGlass.canPerform(self.character, self.window)
 end
 
@@ -139,7 +142,6 @@ function ISCutOutGlass:complete()
         condLowerChance = condLowerChance / 2 -- more likely to lower condition if window breaks
         self.window:smashWindow()
 
-        cutter:setCondition(cutter:getCondition() - 1)
         local gloves = self.character:getWornItem(ItemBodyLocation.HANDS)
         if gloves and not gloves:isBroken() and gloves:getScratchDefense() > 0 then
             gloves:setCondition(gloves:getCondition() - 1)

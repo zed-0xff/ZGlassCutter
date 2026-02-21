@@ -1,11 +1,15 @@
+ZGlassCutter = ZGlassCutter or {}
+
 local function predicateGlassCutter(item)
     return item:hasTag(ISCutOutGlass.RequiredItemTag) and not item:isBroken()
 end
 
-local function onCutOutGlass(playerObj, window)
+-- global for tests
+function ZGlassCutter.onCutOutGlass(playerObj, window)
     if luautils.walkAdjWindowOrDoor(playerObj, window:getSquare(), window) then
         if ISWorldObjectContextMenu.equip(playerObj, playerObj:getPrimaryHandItem(), predicateGlassCutter, true) then
             ISTimedActionQueue.add(ISCutOutGlass:new(playerObj, window));
+            return true
         end
     end
 end
@@ -14,7 +18,7 @@ end
 local function addCutOutGlassOption(context, character, window, cutter)
     local option = context:addOption(
         getText("IGUI_ZGlassCutter_CutOutGlass"),
-        character, onCutOutGlass, window)
+        character, ZGlassCutter.onCutOutGlass, window)
 
     option.toolTip = ISToolTip:new()
     option.iconTexture = cutter:getTexture()
