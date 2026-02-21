@@ -18,6 +18,12 @@ function get_player()
     end
 end
 
+-- TODO: MP
+function set_panic(player, bPanic)
+    local panicStat = CharacterStat.PANIC
+    player:getStats():set(panicStat, bPanic and panicStat:getMaximumValue() or panicStat:getMinimumValue())
+end
+
 function init_player(player)
     if not player then
         player = get_player()
@@ -38,7 +44,10 @@ function init_player(player)
     player:getInventory():removeAllItems()
     player:getReadLiterature():clear()
     player:forgetRecipes()
+
+    set_panic(player, false)
 end
+
 
 function read_book(player, book)
     ISTimedActionQueue.add(ISReadABook:new(player, book, 1))

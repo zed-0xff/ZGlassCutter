@@ -21,6 +21,8 @@ local function addCutOutGlassOption(context, character, window, cutter)
 
     if ISCutOutGlass.canPerform(character, window) then
         local breakChance = ISCutOutGlass.getWindowBreakChance(character, cutter)
+        option.notAvailable = breakChance >= 100
+
         local chanceColor = ColorInfo.new(0, 0, 0, 1)
         getCore():getGoodHighlitedColor():interp(getCore():getBadHighlitedColor(), breakChance/100, chanceColor);
 

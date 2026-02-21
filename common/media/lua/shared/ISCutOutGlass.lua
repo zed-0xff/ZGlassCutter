@@ -52,7 +52,7 @@ function ISCutOutGlass.getWindowBreakChance(character, cutter) -- returns 0-100
         end
     end
 
-    return clamp(chance, 1, 99)
+    return clamp(chance, 1, 100)
 end
 
 function ISCutOutGlass.predicateNotBroken(item)
