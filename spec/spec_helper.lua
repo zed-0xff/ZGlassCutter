@@ -1,4 +1,5 @@
 CUTTER_ID = "ZGlassCutter.GlassCutter"
+GLASS_ID  = "Base.GlassPanel"
 
 function set_sandbox_option(option, value)
     ZBSpec.all_exec("getSandboxOptions():getOptionByName(\"" .. option .. "\"):setValue(" .. tostring(value) .. ")")

@@ -8,7 +8,6 @@ describe("context menu", function()
     before_all(function()
         window = place_window(player:getSquare(), "fixtures_windows_01_1")
         init_player(player)
-        -- add_item(player, CUTTER_ID)
         ISContextManager.getInstance():getWorldMenu().printDebug = function(data)
             menu = data
         end
@@ -166,6 +165,17 @@ describe("context menu", function()
                 it("shows 1% break chance", function()
                     local chance = tonumber(cut_out_glass_option.toolTip.description:match("(%d+)%%"))
                     assert.eq(chance, 1)
+                end)
+
+                it("actually removes the glass", function()
+                    local opt = cut_out_glass_option
+                    opt.onSelect(opt.target, opt.param1, opt.param2, opt.param3)
+
+                    local inv = player:getInventory()
+                    wait_for(inv.contains, inv, GLASS_ID)
+
+                    assert(window:isGlassRemoved())
+                    assert(window:isSmashed())
                 end)
             end)
         end)
