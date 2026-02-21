@@ -167,6 +167,18 @@ function place_tile(square, name)
     return obj
 end
 
+local function getObjectWithSprite(square, spriteName)
+    if not square then return nil end
+    for i=1,square:getObjects():size() do
+        local isoObject = square:getObjects():get(i-1)
+        if isoObject:getSprite() and ((isoObject:getSprite():getName() == spriteName) or
+                (isoObject:getSpriteName() == spriteName)) then
+            return isoObject
+        end
+    end
+    return nil
+end
+
 function place_window(square, name)
     remove_all_non_floor(square)
 
@@ -178,7 +190,11 @@ function place_window(square, name)
     if isServer() then
         window:transmitCompleteItemToClients()
     end
-    return square:getObjectWithSprite(name)
+    if square.getObjectWithSprite then
+        return square:getObjectWithSprite(name) -- 42.13.2+
+    else
+        return getObjectWithSprite(square, name)
+    end
 end
 
 function place_table(square)

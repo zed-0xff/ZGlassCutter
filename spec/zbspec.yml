@@ -18,4 +18,6 @@ ready_condition: |
   return player and not player:tooDarkToRead()
 
 game_versions:
+  - 42.13.1
   - 42.13.2
+  - unstable
