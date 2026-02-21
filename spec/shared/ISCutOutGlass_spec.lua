@@ -1,4 +1,7 @@
 describe(ISCutOutGlass, function()
+    local player = get_player()
+    local cutter = create_item(CUTTER_ID)
+
     it("exists", function()
         assert(described_class)
     end)
@@ -32,13 +35,28 @@ describe(ISCutOutGlass, function()
         assert.is_false(described_class.predicateNotBroken(item))
     end)
 
+    describe("getDuration()", function()
+        before_all(function()
+            set_timed_action_instant(false)
+        end)
+
+        it("is lower with higher Maintenance perk", function()
+            local action = ISCutOutGlass:new(player, cutter)
+
+            set_perk_level(player, Perks.Maintenance, 5)
+            local reduced = action:getDuration()
+
+            set_perk_level(player, Perks.Maintenance, 1)
+            local base = action:getDuration()
+
+            assert.lt(reduced, base)
+        end)
+    end)
+
     describe("getWindowBreakChance()", function()
         before_all(function()
             init_player()
         end)
-
-        local player = get_player()
-        local cutter = create_item(CUTTER_ID)
 
         it("returns a number between 1 and 100", function()
             assert(player)
