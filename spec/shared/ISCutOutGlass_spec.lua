@@ -21,26 +21,72 @@ describe(ISCutOutGlass, function()
     end)
 
     it("predicateNotBroken returns true for unbroken item", function()
-        local item = create_item("ZGlassCutter.GlassCutter")
+        local item = create_item(CUTTER_ID)
         assert.is_true(described_class.predicateNotBroken(item))
     end)
 
     it("predicateNotBroken returns false for broken item", function()
-        local item = create_item("ZGlassCutter.GlassCutter")
+        local item = create_item(CUTTER_ID)
         item:setCondition(0)
         assert.is_true(item:isBroken())
         assert.is_false(described_class.predicateNotBroken(item))
     end)
 
     describe("getWindowBreakChance()", function()
-        it("returns a number between 1 and 99", function()
-            local player = get_player()
+        before_all(function()
+            init_player()
+        end)
+
+        local player = get_player()
+        local cutter = create_item(CUTTER_ID)
+
+        it("returns a number between 1 and 100", function()
             assert(player)
-            local cutter = create_item("ZGlassCutter.GlassCutter")
             local chance = described_class.getWindowBreakChance(player, cutter)
             assert.is_number(chance)
             assert.gt(chance, 0)
-            assert.lt(chance, 100)
+            assert.lt(chance, 101)
+        end)
+
+        it("is lower with higher Maintenance perk", function()
+            set_perk_level(player, Perks.Maintenance, 1)
+            local baseChance = described_class.getWindowBreakChance(player, cutter)
+
+            set_perk_level(player, Perks.Maintenance, 5)
+            local reducedChance = described_class.getWindowBreakChance(player, cutter)
+
+            assert.lt(reducedChance, baseChance)
+        end)
+
+        it("is lower if player has Engineer profession", function()
+            player:getDescriptor():setCharacterProfession(CharacterProfession.UNEMPLOYED)
+            local baseChance = described_class.getWindowBreakChance(player, cutter)
+
+            player:getDescriptor():setCharacterProfession(CharacterProfession.ENGINEER)
+            local reducedChance = described_class.getWindowBreakChance(player, cutter)
+
+            assert.lt(reducedChance, baseChance)
+        end)
+
+        it("is lower if player is drunk", function()
+            local stat = CharacterStat.INTOXICATION
+            player:getStats():set(stat, stat:getMaximumValue())
+            local drunkChance = described_class.getWindowBreakChance(player, cutter)
+
+            player:getStats():set(stat, stat:getDefaultValue())
+            local baseChance = described_class.getWindowBreakChance(player, cutter)
+
+            assert.gt(drunkChance, baseChance)
+        end)
+
+        it("is lower if player is all-thumbs", function()
+            player:getCharacterTraits():add(CharacterTrait.ALL_THUMBS)
+            local allThumbsChance = described_class.getWindowBreakChance(player, cutter)
+
+            player:getCharacterTraits():remove(CharacterTrait.ALL_THUMBS)
+            local baseChance = described_class.getWindowBreakChance(player, cutter)
+
+            assert.gt(allThumbsChance, baseChance)
         end)
     end)
 end)

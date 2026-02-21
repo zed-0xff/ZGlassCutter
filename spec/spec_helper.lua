@@ -46,11 +46,23 @@ function init_player(player)
     player:getReadLiterature():clear()
     player:forgetRecipes()
 
-    set_panic(player, false)
-
-    -- reset all perks except physical
     ZBSpec.all_exec([[
       local player = (getPlayer() or getOnlinePlayers():get(0))
+
+      -- reset profession
+      player:getDescriptor():setCharacterProfession(CharacterProfession.UNEMPLOYED)
+
+      -- reset stats
+      player:getStats():resetStats()
+
+      -- reset traits
+      local traits = player:getCharacterTraits():getKnownTraits()
+      for i=0, traits:size()-1 do
+        local trait = traits:get(i)
+        player:getCharacterTraits():remove(trait)
+      end
+
+      -- reset all perks except physical
       for i=1, Perks.getMaxIndex() do
         local perk = Perks.fromIndex(i)
         local parentPerk = perk:getParent()

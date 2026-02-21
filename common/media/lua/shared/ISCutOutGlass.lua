@@ -132,7 +132,9 @@ function ISCutOutGlass:complete()
     local cutter = self.character:getPrimaryHandItem()
     local condLowerChance = cutter:getConditionLowerChance() + self.character:getMaintenanceMod()
 
-    -- ZombRand(100) returns 0-99 so if break chance is 99% then value of 99 should not break it
+    -- ZombRand(100) returns 1-100 so:
+    --  if break chance is 99% then random value of 99 should not break ia
+    --  if break chance is  1% then random value of  0 should break ia
     if ZombRand(100) < ISCutOutGlass.getWindowBreakChance(self.character, cutter) then
         condLowerChance = condLowerChance / 2 -- more likely to lower condition if window breaks
         self.window:smashWindow()
