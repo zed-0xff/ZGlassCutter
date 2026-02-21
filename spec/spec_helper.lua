@@ -46,8 +46,19 @@ function init_player(player)
     player:forgetRecipes()
 
     set_panic(player, false)
-end
 
+    -- reset all perks except physical
+    ZBSpec.all_exec([[
+      local player = (getPlayer() or getOnlinePlayers():get(0))
+      for i=1, Perks.getMaxIndex() do
+        local perk = Perks.fromIndex(i)
+        local parentPerk = perk:getParent()
+        if player:getPerkLevel(perk) > 0 and parentPerk and parentPerk ~= Perks.PhysicalCategory and parentPerk ~= Perks.None then
+          player:setPerkLevelDebug(perk, 0)
+        end
+      end
+    ]])
+end
 
 function read_book(player, book)
     ISTimedActionQueue.add(ISReadABook:new(player, book, 1))

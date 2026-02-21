@@ -24,7 +24,7 @@ function ISCutOutGlass.getWindowBreakChance(character, cutter) -- returns 0-100
         80
         - character:getPerkLevel(Perks.Maintenance) * 5
         - character:getPerkLevel(Perks.Glassmaking) * 5
-        - character:getPerkLevel(Perks.Science)     * 5
+        - character:getPerkLevel(Perks.Science)     * 5 -- will return 0 if perk is not defined
         - character:getPerkLevel(Perks.Aiming)      * 5
         - character:getPerkLevel(Perks.Woodwork)    * 5
         - character:getPerkLevel(Perks.Agility)     * 5
