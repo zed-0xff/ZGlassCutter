@@ -1,9 +1,33 @@
 [h1]Glass Cutter[/h1]
+A small mod that adds a Glass Cutter tool for [b]safely removing glass panes from windows[/b] without smashing them.
 
+[h2]Features[/h2]
+[list]
+[*] [b]Cut out glass[/b] — Right-click a window → Window → Cut out glass (requires cutter and Maintenance 1)
+[*] [b]Break chance[/b] — Success depends on Maintenance, Glassmaking, Science, Aiming, Woodwork, and Agility; lower chance with higher skills
+[*] [b]Engineer bonus[/b] — Engineers get a 50% break chance reduction
+[*] [b]Gloves matter[/b] — Wearing awkward gloves or All Thumbs trait increases break chance
+[*] [b]Obtaining[/b] — Find the cutter with other tools (world loot) or craft it after finding the recipe magazine
+[/list]
 
-[b]Links:[/b]
+[h2]FAQ[/h2]
+[list]
+[*] [b]Safe to add/remove from existing games?[/b] - Yes.
+[*] [b]Supported game versions?[/b]
+    [list]
+    [*] 42.13.1
+    [*] 42.13.2
+    [*] 42.14 (unstable)
+    [/list]
+[*] [b]Works in MP?[/b] - Yes.
+[/list]
+
+[h2]My other mods[/h2]
+https://steamcommunity.com/sharedfiles/filedetails/?id=3622986450
+https://steamcommunity.com/sharedfiles/filedetails/?id=3659195975
+
+[h2]Links[/h2]
 [url=https://github.com/zed-0xff/ZGlassCutter]GitHub Repository[/url]
 
-[b]☕ Support the Developer:[/b]
+[h2]Support the Developer[/h2]
 [url=https://ko-fi.com/zed_0xff][img]https://i.imgur.com/Utx6OIH.png[/img][/url]
-
