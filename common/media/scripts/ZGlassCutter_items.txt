@@ -60,6 +60,5 @@ module ZGlassCutter
         StaticModel = Magazine,
         WorldStaticModel = MagazineGlass1Ground,
         Tags = base:magazine,
-        OnCreate = SpecialLootSpawns.OnCreateRecipeMagazine,
     }
 }
