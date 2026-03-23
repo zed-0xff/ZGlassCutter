@@ -4,3 +4,4 @@ icon=media/textures/Item_GlassCutter.png
 poster=poster.png
 description=A small, sharp tool used for cutting glass.<LINE>Use to remove glass panes from windows.
 
+require=\zdk
